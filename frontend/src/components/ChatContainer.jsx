@@ -5,6 +5,7 @@ import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import MessageSkeleton from "./skeletons/MessageSkeleton";
 import { useAuthStore } from "../store/useAuthStore";
+import { useThemeStore } from "../store/useThemeStore";
 import { formatMessageTime } from "../lib/utils";
 
 const ChatContainer = () => {
@@ -17,6 +18,7 @@ const ChatContainer = () => {
     unsubscribeFromMessages,
   } = useChatStore();
   const { authUser } = useAuthStore();
+  const { fontSize } = useThemeStore();
   const messageEndRef = useRef(null);
 
   useEffect(() => {
@@ -67,11 +69,11 @@ const ChatContainer = () => {
               </div>
             </div>
             <div className="chat-header mb-1">
-              <time className="text-xs opacity-50 ml-1">
+              <time className="text-xs opacity-50 ml-1" style={{ fontSize: `${Math.max(fontSize - 4, 10)}px` }}>
                 {formatMessageTime(message.createdAt)}
               </time>
             </div>
-            <div className="chat-bubble flex flex-col">
+            <div className="chat-bubble flex flex-col" style={{ fontSize: `${fontSize}px` }}>
               {message.image && (
                 <img
                   src={message.image}
@@ -79,7 +81,7 @@ const ChatContainer = () => {
                   className="sm:max-w-[200px] rounded-md mb-2"
                 />
               )}
-              {message.text && <p>{message.text}</p>}
+              {message.text && <p style={{ fontSize: `${fontSize}px` }}>{message.text}</p>}
             </div>
           </div>
         ))}

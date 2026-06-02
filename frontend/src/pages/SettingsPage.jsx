@@ -1,7 +1,6 @@
 import { THEMES } from "../constants";
 import { useThemeStore } from "../store/useThemeStore";
 import { Send } from "lucide-react";
-import { useState } from "react";
 
 const PREVIEW_MESSAGES = [
   { id: 1, content: "Hey! How's it going?", isSent: false },
@@ -9,15 +8,14 @@ const PREVIEW_MESSAGES = [
 ];
 
 const SettingsPage = () => {
-  const { theme, setTheme } = useThemeStore();
-  const [fontSize, setFontSize] = useState(14);
+  const { theme, setTheme, fontSize, setFontSize, resetFontSize } = useThemeStore();
 
   const increaseFontSize = () => {
-    setFontSize((prev) => Math.min(prev + 2, 24));
+    setFontSize(Math.min(fontSize + 2, 24));
   };
 
   const decreaseFontSize = () => {
-    setFontSize((prev) => Math.max(prev - 2, 10));
+    setFontSize(Math.max(fontSize - 2, 10));
   };
 
   return (
@@ -54,14 +52,17 @@ const SettingsPage = () => {
         </div>
 
         {/* Font Size Controls */}
-        <div className="flex items-center gap-4 mt-6">
-          <button className="btn btn-outline" onClick={decreaseFontSize}>
+        <div className="flex flex-wrap items-center gap-4 mt-6">
+          <button className="btn btn-outline btn-sm" onClick={decreaseFontSize}>
             - Decrease Font Size
           </button>
-          <button className="btn btn-outline" onClick={increaseFontSize}>
+          <button className="btn btn-outline btn-sm" onClick={increaseFontSize}>
             + Increase Font Size
           </button>
-          <span className="text-sm">Current Font Size: {fontSize}px</span>
+          <button className="btn btn-outline btn-sm" onClick={resetFontSize}>
+            🔄 Reset to Default
+          </button>
+          <span className="text-sm font-medium">Current Font Size: {fontSize}px</span>
         </div>
 
         {/* Preview Section */}
@@ -78,8 +79,8 @@ const SettingsPage = () => {
                       A
                     </div>
                     <div>
-                      <h3 className="font-medium text-sm">Anand Raj</h3>
-                      <p className="text-xs text-base-content/70">Online</p>
+                      <h3 className="font-medium text-sm" style={{ fontSize: `${Math.max(fontSize - 2, 11)}px` }}>Anand Raj</h3>
+                      <p className="text-xs text-base-content/70" style={{ fontSize: `${Math.max(fontSize - 4, 9)}px` }}>Online</p>
                     </div>
                   </div>
                 </div>
@@ -97,12 +98,13 @@ const SettingsPage = () => {
                           ${message.isSent ? "bg-primary text-primary-content" : "bg-base-200"}
                         `}
                       >
-                        <p className="text-sm">{message.content}</p>
+                        <p className="text-sm" style={{ fontSize: `${fontSize}px` }}>{message.content}</p>
                         <p
                           className={`
                             text-[10px] mt-1.5
                             ${message.isSent ? "text-primary-content/70" : "text-base-content/70"}
                           `}
+                          style={{ fontSize: `${Math.max(fontSize - 6, 8)}px` }}
                         >
                           12:00 PM
                         </p>
@@ -117,6 +119,7 @@ const SettingsPage = () => {
                     <input
                       type="text"
                       className="input input-bordered flex-1 text-sm h-10"
+                      style={{ fontSize: `${fontSize}px` }}
                       placeholder="Type a message..."
                       value="This is a preview"
                       readOnly

@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
+import { useThemeStore } from "../store/useThemeStore";
 import { Image, Send, X } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -8,6 +9,7 @@ const MessageInput = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const fileInputRef = useRef(null);
   const { sendMessage } = useChatStore();
+  const { fontSize } = useThemeStore();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -74,6 +76,7 @@ const MessageInput = () => {
           <input
             type="text"
             className="w-full input input-bordered rounded-lg input-sm sm:input-md"
+            style={{ fontSize: `${fontSize}px` }}
             placeholder="Type a message..."
             value={text}
             onChange={(e) => setText(e.target.value)}
